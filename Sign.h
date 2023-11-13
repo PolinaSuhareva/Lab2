@@ -10,7 +10,7 @@ class Sign
 private:
     string LnameFname; // фамилия имя
     string sign; // знак зодиака
-    string birthday; // день рождения
+    string birthday; // день рожденияs
 
 public:
     Sign(); // конструктор по умолчанию
@@ -25,7 +25,7 @@ public:
     void Set(); // метод установки значения
     void Change(); // метод редактирования значений
 
-    friend ostream &operator<< (ostream &stream, Sign s); // перегрузка оператора извлеченния
+    friend ostream &operator<< (ostream &stream, Sign &s); // перегрузка оператора извлеченния
     friend istream &operator>> (istream &stream, Sign &s); // перегрузка оператора вставки
 };
 

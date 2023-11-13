@@ -43,24 +43,28 @@ Sign::~Sign()
 // метод извлечения значений
 void Sign::Extract()
 {
-    cout << this;
+    cout << *this;
 }
 
 // метод доступа к полям
 void Sign::Get()
 {
-    string choice;
+    // обнуляем поток ввода
+    string buf;
+    getline(cin, buf);
 
+    string choice;
+    cout << "\nЧто хотите получить?\n" <<
+                "1 - Фамилия Имя\n" <<
+                "2 - Знак зодиака\n" <<
+                "3 - День рождения\n" <<
+                "4 - Все поля" << endl;
+    cout << "Выбор: ";
+    cin >> choice;
+
+    // обработка исключений
     try
     {
-        cout << "Что хотите получить?" <<
-                "1 - Фамилия Имя" <<
-                "2 - Знак зодиака" <<
-                "3 - День рождения" <<
-                "4 - Все поля" << endl;
-        cout << "Выбор: ";
-        cin >> choice;
-
         for (int id = 0; id < choice.size(); id ++)
         {
             if (choice[id] >= 'A' && choice[id] <= 'Z') throw "Error";
@@ -71,17 +75,15 @@ void Sign::Get()
         cout << "Неверный ввод" << endl;
     }
 
-    if (choice == "1") cout << "Фамилия Имя: " << this->LnameFname << endl;
-    else if (choice == "2") cout << "Знак зодиака: " << this->sign << endl;
-    else if (choice == "3") cout << "День рождения: " << this->birthday << endl;
-    else if (choice == "4") cout << "Фамилия Имя: " << this->LnameFname << "Знак зодиака: " << this->sign << "День рождения: " << this->birthday << endl;
+    if (choice == "1") cout << "\nФамилия Имя: " << this->LnameFname << endl;
+    else if (choice == "2") cout << "\nЗнак зодиака: " << this->sign << endl;
+    else if (choice == "3") cout << "\nДень рождения: " << this->birthday << endl;
+    else if (choice == "4") cout << "\nФамилия Имя: " << this->LnameFname << " | Знак зодиака: " << this->sign << " | День рождения: " << this->birthday << endl;
     else
     {
         cout << "Ошибка выбора" << endl;
         exit(0);
     }
-
-    getline(cin, choice); // обнуляем поток ввода
 }
 
 // метод доступа к дню рождения
@@ -105,17 +107,20 @@ void Sign::Set()
 // метод изменения значений
 void Sign::Change()
 {
+    // обнуляем поток ввода
+    string buf;
+    getline(cin, buf);
+
     string choice;
+    cout << "\nЧто хотите изменить?\n" <<
+            "1 - Фамилия Имя\n" <<
+            "2 - Знак зодиака\n" <<
+            "3 - День рождения\n" << endl;
+    cout << "Выбор: ";
+    cin >> choice;
 
     try
     {
-        cout << "Что хотите изменить?" <<
-                "1 - Фамилия Имя" <<
-                "2 - Знак зодиака" <<
-                "3 - День рождения" << endl;
-        cout << "Выбор: ";
-        cin >> choice;
-
         for (int id = 0; id < choice.size(); id ++)
         {
             if (choice[id] >= 'A' && choice[id] <= 'Z') throw "Error";
@@ -126,35 +131,52 @@ void Sign::Change()
         cout << "Неверный ввод" << endl;
     }
 
-    getline(cin, choice); // обнуляем поток ввода
-
     if (choice == "1")
     {
+        getline(cin, choice);
+
         cout << "Фамилия Имя: ";
-        cin >> this->LnameFname;
+        getline(cin, this->LnameFname);
     }
     else if (choice == "2")
     {
+        getline(cin, choice);
+
         cout << "Знак зодиака: ";
-        cin >> this->sign;
+        getline(cin, this->sign);
     }
     else if (choice == "3")
     {
+        getline(cin, choice);
+
         cout << "День рождения: ";
-        cin >> this->birthday;
+        getline(cin, this->birthday);
+
+        for (int i = 0; i < birthday.size(); i++)
+        {
+            if (birthday[i] >= 'A' && birthday[i] <= 'Z')
+            {
+                cout << "Неверный ввод" << endl;
+                exit(0);
+            }
+
+            if (birthday[i] == ',' || birthday[i] == '/' || birthday[i] == ':' || birthday[i] == ' ' || birthday[i] == ';')
+            {
+                cout << "Неверный ввод" << endl;
+                exit(0);
+            }
+        }
     }
     else
     {
         cout << "Ошибка выбора" << endl;
         exit(0);
     }
-
-    getline(cin, choice); // обнуляем поток ввода
 }
 
-ostream &operator<< (ostream &stream, Sign s) // перегрузка оператора извлеченния
+ostream &operator<< (ostream &stream, Sign &s) // перегрузка оператора извлеченния
 {
-    stream << "Все поля класса:" << endl;
+    stream << "\nВсе поля класса:" << endl;
     stream << s.LnameFname << endl;
     stream << s.sign << endl;
     stream << s.birthday << endl;
@@ -164,14 +186,35 @@ ostream &operator<< (ostream &stream, Sign s) // перегрузка опера
 
 istream &operator>> (istream &stream, Sign &s) // перегрузка оператора вставки
 {
+    string buf;
+
     cout << "Вставка значений:" << endl;
     cout << "Фамилия имя: ";
-    stream >> s.LnameFname;
+    getline(stream, buf);
+    s.LnameFname = buf;
+
     cout << "Знак зодиака: ";
-    stream >> s.sign;
+    getline(stream, buf);
+    s.sign = buf;
+
     cout << "День рождения: ";
-    stream >> s.birthday;
-    string buf;
-    getline(stream, buf); // обнуляем поток ввода
+    getline(stream, buf);
+    s.birthday = buf;
+
+    for (int i = 0; i < buf.size(); i++)
+        {
+            if (buf[i] >= 'A' && buf[i] <= 'Z')
+            {
+                cout << "Неверный ввод" << endl;
+                exit(0);
+            }
+
+            if (buf[i] == ',' || buf[i] == '/' || buf[i] == ':' || buf[i] == ' ' || buf[i] == ';')
+            {
+                cout << "Неверный ввод" << endl;
+                exit(0);
+            }
+        }
+
     return stream;
 }

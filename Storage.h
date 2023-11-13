@@ -10,14 +10,19 @@ using namespace std;
 class Store
 {
 private:
-    Sign **array;
-    int countElement;
+    Sign **array; // массив хранения данных
+    int countElement;// подсчет кол-ва элементов в массиве
+
+    int *arrayYear; // массив хранит год рождения
+    int *arrayMonth; // массив хранит месяц рождения
+    int *arrayDay; // массив хранит день рождения
+    int *arrayFinally; // массив хранит итоговый возраст
 
 public:
-    Store();
-    Store(int size);
-    Store(const Store &s);
-    ~Store();
+    Store(); // конструктор по умолчанию
+    Store(int size); // конструктор с параметром
+    Store(const Store &s); // конструктор копирования
+    ~Store(); // деструктор
 
     void SortedArray(); // сортировка после ввода
     void FindLname(); // поиск по фамилии
